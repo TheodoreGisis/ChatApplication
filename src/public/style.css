@@ -1,0 +1,113 @@
+/* Basic Reset to remove default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Styling for the username */
+.username {
+    font-weight: bold;
+    color: #454655; /* Dark modern color for the username */
+    margin-bottom: 4px;
+}
+
+
+
+/* Style the body with a light gray background and modern font */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;  /* Light gray background for the whole page */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;  /* Neutral dark gray for text */
+    padding: 20px;
+}
+
+/* Style the Chat App title */
+h1 {
+    font-size: 2.5rem; /* Larger font for the title */
+    color: #007bff; /* Modern blue for title */
+    margin-bottom: 30px;
+}
+
+/* Container for messages - Increased width and height */
+#messages {
+    background-color: #ffffff;  /* White background for message area */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px; /* Increased width for larger chat box */
+    height: 500px; /* Increased height for larger chat area */
+    overflow-y: auto; /* Enables scrolling when chat overflows */
+    padding: 20px; /* Increased padding for more space around messages */
+    margin-bottom: 20px;
+}
+
+/* Message bubbles */
+#messages div {
+    margin-bottom: 15px; /* Increase space between messages */
+    padding: 15px; /* Increase padding for message bubbles */
+    border-radius: 12px;
+    background-color: #e3e7ed;  /* Light gray-blue for message background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+}
+
+#messages div p {
+    margin: 0;
+    font-size: 1.1rem; /* Increase font size for messages */
+}
+
+/* Style the form and input area */
+form {
+    display: flex;
+    width: 100%;
+    max-width: 800px; /* Match the chat box width */
+    margin-bottom: 20px; /* Increased margin for better spacing */
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 15px; /* Increase padding for larger input field */
+    font-size: 1.2rem; /* Increase font size for the input text */
+    border-radius: 8px;
+    border: 1px solid #ced4da;  /* Soft border color */
+    margin-right: 10px;
+}
+
+button[type="submit"], #Geolocation {
+    background-color: #007bff; /* Primary modern blue color */
+    color: white;
+    border: none;
+    padding: 15px 20px; /* Increase padding for larger buttons */
+    font-size: 1.2rem; /* Increase button text size */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover, #Geolocation:hover {
+    background-color: #0056b3; /* Darker blue for hover effect */
+}
+
+/* Location button specific styles */
+#Geolocation {
+    margin-top: 10px;
+    max-width: 800px; /* Match chat width */
+    width: 100%;
+}
+
+/* For messages with links */
+a {
+    color: #007bff;  /* Modern blue for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

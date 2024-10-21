@@ -1,49 +1,102 @@
 const express = require('express');
+const filter = require('leo-profanity');
 const path = require('path');
-const http = require('http'); // Fix here
-const socketio = require('socket.io');
+const http = require('http'); // Required for creating the HTTP server
+const socketio = require('socket.io'); // Required for WebSocket
+const { fileURLToPath } = require('url');
+const {generatedMessageWithTimestamp, generatedLocationMessageWithTimestamp} = require('./utils/messages')
+const {addUser,removeUser,getUser,getUsersInRoom} = require('./utils/users')
 
 const app = express();
-const server = http.createServer(app); // Fix here
-const io = socketio(server);
+const server = http.createServer(app); // Create the HTTP server
+const io = socketio(server); // Attach socket.io to the HTTP server
 
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Serving static files
+// Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, './public')));
 
-//Message to serve to the Clients when they are log in to our Chat App
-const message = "Welcome to our Chat Application"
 
-//Serve the 'connection' from server side to client side
+// Serve the 'connection' event from server side to client side
 io.on('connection', (socket) => {
-
     console.log("New WebSocket Connection");
-    //Emit server with client
-    socket.emit('Message',message)
-    //Listen from client, and display the message to the server side
-    //Here we are emit the message to all users exept from one that is connected to the Chat App
-    socket.broadcast.emit('Message',"A new User is log in")
 
-    socket.on("sendMessage",(message) =>{
-        console.log("The message from the client is: ",message)
-        //Serve the message to all the client that are connectin to our server right now
-        io.emit('AllConnectiorMessage',message)
-    })
+    socket.on('join', ({ username, room }, callback) => {
+        const {error, user} = addUser({id:socket.id,username,room})
 
-    socket.on('sendLocation',(location) =>{
-        io.emit('Message', `https${location.latitude},${location.longtitude}`)
-    })
-    socket.on('disconnect',()=>{
-        io.emit('Message','User is left')
-    })
+        if(error){
+            return callback(error)
+        }
+        // Join the specified room
+        socket.join(user.room);
+
+        // Emit a welcome message to the new client
+        socket.emit('Message', generatedMessageWithTimestamp('Admin','Welcome!'));
+
+        // Broadcast to others in the room that a new user has joined
+        socket.broadcast.to(user.room).emit(
+            'Message',
+            generatedMessageWithTimestamp(`${user.username} has joined the chat`)
+        );
 
 
+        io.to(user.room).emit('roomData', {
+            room : user.room,
+            users: getUsersInRoom(user.room)
+        })
+
+        callback()
+    });
+
+
+    // Listen for messages from clients
+    socket.on("sendMessage", (message, callback) => {
+        //console.log("The message from the client is: ", message);
+        
+        // Check for profanity in the message
+
+        const user = getUser(socket.id)
+
+        if (filter.check(message)) {
+            return callback('Profanity is not allowed');
+        }
+
+        // Emit the message to all connected clients
+        io.to(user.room).emit('Message', generatedMessageWithTimestamp(user.username,message)); // Use 'Message' for consistency
+        callback(); // Acknowledge the event
+    });
+
+    // Handle location sharing
+    socket.on('sendLocation', (location, callback) => {
+        const user = getUser(socket.id)
+
+        const url = `https://google.com/maps?q=${location.latitude},${location.longitude}`;
+        io.to(user.room).emit('locationmessage', generatedLocationMessageWithTimestamp(user.username,url));
+        callback('Location is shared');
+    });
+
+
+    // Handle disconnection of users
+    socket.on('disconnect', () => {
+        const user = removeUser(socket.id)
+        if(user){
+            io.to(user.room).emit('Message',generatedMessageWithTimestamp('Admin',`${user.username} is disconnected`));
+            io.to(user.room).emit('roomData',{
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
+        }
+
+
+
+    });
 });
 
-//Listen to port 3000
+// Start the server
 server.listen(port, () => {
     console.log("Server is listening on port: " + port);
 });
+
+

@@ -1,0 +1,73 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for the form */
+.join-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Heading style */
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Input fields styling */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0; /* Space between inputs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Input focus effect */
+input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+label {
+    display: block;            /* Make the label take up the full width */
+    text-align: left;           /* Align the text to the left */
+    margin-bottom: 5px;         /* Add space below the label */
+    font-weight: bold;          /* Make the label text bold */
+    font-size: 14px;            /* Set a readable font size */
+    color: #333;                /* Dark gray color for the label text */
+}

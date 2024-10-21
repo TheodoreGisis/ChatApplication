@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>This is a Chat Bot</title>
+    <title>Join Chat Room</title>
+    <link rel="stylesheet" href="indexstyle.css">
 </head>
 <body>
-    <h1>Chat App Text</h1>
 
-    <!-- Chat form with an input and a submit button -->
-    <form id="messageForm">
-        <input type="text" id="messageInput" placeholder="Enter your message" required />
-        <button type="submit">Send</button>
-    </form>
+    <div class="join-container">
+        <h2>Join Chat Room</h2>
+        <form id="joinForm" action="chat.html">
+            <!-- Username input field -->
 
-    <button id="Geolocation" type="submit">Send Geolocation</button> 
+            <label for="username">Name</label>
+            <input type="text" id="username" name="username" placeholder="Enter your name" required />
+            
+            <label for="room">Room</label>
+            <!-- Room name input field -->
+            <input type="text" id="room" name="room" placeholder="Enter room name" required />
+            
+            <!-- Join button -->
+            <button type="submit">Join</button>
+        </form>
+    </div>
 
-    <!-- Area to display chat messages -->
-    <div id="messages"></div>
-
-    <!-- Load scripts at the end of the body to ensure DOM is fully loaded -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/chat.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
